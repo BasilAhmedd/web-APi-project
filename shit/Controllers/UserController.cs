@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using shit.Repo;
 
 namespace shit.Controllers
 {
@@ -7,63 +8,47 @@ namespace shit.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
-        public UserController(ApplicationDbContext context) {
-          _context = context;
+        private readonly IUserRepo _userRepo;
+        public UserController(IUserRepo userRepo)
+        {
+            _userRepo = userRepo;
 
         }
-
         [HttpGet("{id}")]
         public IActionResult Get (int id) {
             if (User != null)
             {
-               var user = _context.Users.FirstOrDefault(x => x.Id == id);
+               var user = _userRepo.GetUserById(id);
                 return Ok(user);
             }
             return NotFound();
         }
         [HttpPost]
         public IActionResult Post (UserDTO dto) {
-            var u = new User
-            {
-                Name = dto.Name,
-                Email = dto.Email,
-            };
-            _context.Users.Add(u);
-            _context.SaveChanges();
-            return Ok(u);
+
+            _userRepo.AddUser(dto);
+            return Ok(dto);
         } 
         [HttpPut]
         public IActionResult Put (UserDTO dto , int id) {
-            var user = _context.Users.FirstOrDefault (x => x.Id == id); 
-            if(user != null)
-            {
-                user.Email = dto.Email;
-                user.Name = dto.Name;
-                _context.SaveChanges();
-                return Ok(user);
-            }
-            else
-            {
-                return NotFound();
-            }
+            _userRepo.UpdateUser(dto);
+            return Ok(dto);
+            //var user = _userRepo.GetUserById(id);
+            //if (user != null)
+            //{
+            //    user.Email = dto.Email;
+            //    user.Name = dto.Name;
+            //    _userRepo.SaveChanges();
+            //    return Ok(user);
+            //}
+
         }
 
         [HttpDelete]
         public IActionResult Delete (int id)
         {
-            var user = _context.Users.FirstOrDefault(x => x.Id == id);
-            if (user != null)
-            {
-                
-                _context.Users.Remove(user);
-                _context.SaveChanges();
-                return Ok(user);
-            }
-            else
-            {
-                return NotFound();
-            }
+            _userRepo?.DeleteUser(id);
+            return NoContent();
         }
     }
 }
