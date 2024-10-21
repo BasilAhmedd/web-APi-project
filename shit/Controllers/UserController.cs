@@ -15,22 +15,22 @@ namespace shit.Controllers
 
         }
         [HttpGet("{id}")]
-        public IActionResult Get (int id) {
+        public IActionResult Get ([FromRoute] User user) {
             if (User != null)
             {
-               var user = _userRepo.GetUserById(id);
+               var users = _userRepo.GetUserById(user.Id);
                 return Ok(user);
             }
             return NotFound();
         }
         [HttpPost]
-        public IActionResult Post (UserDTO dto) {
+        public IActionResult Post ([FromBody]UserDTO dto) {
 
             _userRepo.AddUser(dto);
             return Ok(dto);
         } 
         [HttpPut]
-        public IActionResult Put (UserDTO dto , int id) {
+        public IActionResult Put ([FromBody]UserDTO dto ,[FromRoute] int id) {
             _userRepo.UpdateUser(dto);
             return Ok(dto);
             //var user = _userRepo.GetUserById(id);
@@ -45,7 +45,7 @@ namespace shit.Controllers
         }
 
         [HttpDelete]
-        public IActionResult Delete (int id)
+        public IActionResult Delete ([FromRoute]int id)
         {
             _userRepo?.DeleteUser(id);
             return NoContent();
