@@ -39,9 +39,11 @@
             
         }
 
-        
-      
-       
+        public User ValidateUser(string email, string password)
+        {
+            return _context.Users.FirstOrDefault(x => x.Email == email && x.Password == password);
+            
+        }
     }
 }
 

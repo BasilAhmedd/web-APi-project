@@ -6,5 +6,7 @@
         void UpdateUser(UserDTO dto);   
         void AddUser(UserDTO dto);
         void DeleteUser(int id);
+
+        User ValidateUser(string email , string password);
     }
 }
