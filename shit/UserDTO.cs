@@ -14,10 +14,8 @@ namespace shit
         [EmailAddress(ErrorMessage ="Invalid Email address")]
         public string Email { get; set; }
 
-        [RegularExpression(@"^[01]+[0-9]*{,11}$", ErrorMessage = "Invalid phone number")]
+        [RegularExpression(@"^01+[0-9]{,11}*$", ErrorMessage = "Invalid phone number")]
         public string PhoneNumber { get; set; }
-        [CreditCard(ErrorMessage ="Invalid Credit Card")]
-        public string CreditCard { get; set; }
 
         public string? Password { get; set; }
         [Compare("Password",ErrorMessage ="Password Dont Match")]
