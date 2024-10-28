@@ -18,6 +18,7 @@
             {
                 Name = dto.Name,
                 Email = dto.Email,
+                Password = dto.Password,
             };
             _context.Users.Add(u);
             _context.SaveChanges();
@@ -27,6 +28,7 @@
             var user = GetUserById(dto.Id);
             user.Email = dto.Email;
             user.Name = dto.Name;
+            user.Password = dto.Password;
             _context.Users.Update(user);
             _context.SaveChanges();
         }
